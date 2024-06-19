@@ -2,29 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-  }
-}
-
 
 /* light mode styles */
 body {
-  @apply bg-white text-black;
+  @apply bg-white text-black dark:bg-[#181A2A] dark:text-white;
 }
 
-/* dark mode styles */
-.dark {
-  @apply bg-gray-800 text-white;
-}
 
-/* Specific element styles (optional) */
-.dark h1 {
-  @apply text-3xl text-yellow-500; /* Override light mode styles */
-}
 
 
 

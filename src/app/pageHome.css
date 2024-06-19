@@ -1,0 +1,3 @@
+.bg-gradient-overlay {
+    background: linear-gradient(to right, rgba(91, 89, 89, 0.5), rgba(138, 136, 136, 0.5)), url('../components/assets/front_bg.png');
+  }

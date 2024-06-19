@@ -3,6 +3,8 @@ import { ThemeProvider } from 'next-themes';
 import { createRoot } from 'react-dom/client';
 import RootLayout from './layout';
 
+import PushNotification from "@/components/PushNotification/PushNotification";
+
 interface Props {
     Component: React.ElementType;
     pageProps?: any;
@@ -12,9 +14,10 @@ function MyApp({ Component, pageProps }: Props) {
 
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark">
+    <>
+      <PushNotification />
       <Component {...pageProps} />
-    </ThemeProvider>
+    </>
   );
 }
 
