@@ -50,6 +50,9 @@ const MobileNav: React.FC=() => {
               <Link href="/about">About</Link>
             </li>
             <li className="px-[2rem] py-3 hover:bg-gray-300 rounded-md transition-all">
+              <Link href="/single_post">Single Post</Link>
+            </li>
+            <li className="px-[2rem] py-3 hover:bg-gray-300 rounded-md transition-all">
               <Link href="/contact">Contact</Link>
             </li>
           </ul>
