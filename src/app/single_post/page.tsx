@@ -8,15 +8,16 @@ import { Card } from 'antd';
 //     singlePost:object;
 // }
 
-const Single_post:React.FC = ({data}) => {
+const Single_post:React.FC = () => {
 
   return (
     <>
         <HomePageLayout >
             <h1>Single post pages</h1>
-            <div className="lg:ms-40 md:ms-15">
+            <div className="lg:ms-20 md:ms-15 sm:ms-10 ms-10">
                 <Button type="primary">Technology</Button>
-                <h1 className="font-medium text-2xl mt-3">The Impact of Technology on the Workplace: <p>How Technology is Changing</p> </h1>
+                <h1 className="font-semibold lg:text-2xl md:text-2xl sm:text-2xl text-sm mt-3">The Impact of Technology on the Workplace:
+                <p>How Technology is Changing</p> </h1>
                 <div className="flex lg:gap-6 md:gap-4 gap-6 items-center flex-wrap">
                 <div className="flex gap-2 items-center mt-3">
                     <div className="w-[36px]">
@@ -26,6 +27,8 @@ const Single_post:React.FC = ({data}) => {
                     </div>
                     <p className="text-[#97989F] text-[16px]">{"August 20, 2022"}</p>
                 </div>
+
+                {/* just put it there after the api we use the image inside it  */}
                 <section className="mt-5">
                     <PostCard/>
                 </section>
@@ -34,14 +37,26 @@ const Single_post:React.FC = ({data}) => {
                     we'll explore tips and tricks for a memorable journey and how to make most of your travels</p>
                 <h1 className="font-semibold text-1xl mt-3">Research your Destination</h1>
                 <h1 className="font-semibold text-1xl mt-3">Plan your itinerary</h1>
-                <Card style={{ width: 900 }}>
+                <div className="mx-auto w-12/12 mb-5 text-center ps-3 pe-3 bg-[#F6F6F7] dark:text-black rounded-md">
+                    <section>
+                        {
+                            <div>Traveling can expose you to new environment and potential health risk, so as it's crucial to take precautions to stay safe and healthy</div>
+                        }
+                    </section>
+                </div>
+
+
+
+
+
+                {/* <Card style={{ width: 900 }}>
     
-                    {/* <div className= "bg-[#696A75] text-[16px]">
+                    <div className= "bg-[#696A75] text-[16px]">
                         {data?.map((post:object)=>(
                             <div>{post.body}</div>
                         ))}
-                    </div> */}
-                </Card>
+                    </div>
+                </Card> */}
             </div>
         </HomePageLayout>
     </>
