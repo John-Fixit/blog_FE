@@ -5,6 +5,7 @@ import Image from "next/image";
 import PostCard from "@/components/PostCard/PostCard";
 import contentImage from "@/components/assets/content.png";
 import { Button } from "antd";
+import Link from "next/link";
 
 const Home = () => {
 
@@ -70,7 +71,9 @@ const Home = () => {
                   <PostCard />
                 </div>
                 <div className="flex justify-center mt-3">
-                  <Button size="large">View All Post</Button>
+                  <Link href="/blog_listing">
+                    <Button size="large">View All Post</Button>
+                  </Link>
                 </div>
               </div>
             </div>
