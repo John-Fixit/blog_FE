@@ -6,8 +6,9 @@ import PostCard from "@/components/PostCard/PostCard";
 import Link from "next/link";
 import { Button } from "antd";
 
-
-
+export const metadata={
+    title:"Blog Listing"
+}
 
 const Blog_listing:React.FC =()=>{
     return(
@@ -16,8 +17,8 @@ const Blog_listing:React.FC =()=>{
             <h1>blog Listing Pages</h1>
             <h1 className="text-2xl text-center font-bold mt-5">Page Title</h1>
             <section className="flex flex-row gap-2 justify-center mb-5 divide-x divide-gray-400">  
-                <div>Home</div>
-                <div className="ps-2">Link One</div>
+                <div className="cursor-pointer">Home</div>
+                <div className="ps-2 cursor-pointer">Link One</div>
             </section>
 
             <section
@@ -51,8 +52,8 @@ const Blog_listing:React.FC =()=>{
                 <PostCard />
             </div>
         </section>
-        <div className="flex justify-center mt-3">
-             <Link href="/more_post">
+        <div className="flex justify-center m-3 ">
+             <Link href="/blog_listing/more_post">
                 <Button size="large">Load More</Button>
             </Link>
         </div>

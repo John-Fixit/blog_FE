@@ -4,6 +4,10 @@ import PostCard from "@/components/PostCard/PostCard";
 import { UserOutlined } from '@ant-design/icons';
 import{ Avatar} from "antd";
 
+export const metadata={
+    title:"Author Page"
+}
+
 const Author_page:React.FC =()=>{
     return(
         <> <HomePageLayout >
