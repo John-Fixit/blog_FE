@@ -1,4 +1,6 @@
 
+"use client";
+
 import React from "react";
 import HomePageLayout from "./layouts/HomePageLayout/layout";
 import Image from "next/image";
@@ -6,11 +8,14 @@ import PostCard from "@/components/PostCard/PostCard";
 import contentImage from "@/components/assets/content.png";
 import { Button } from "antd";
 import Link from "next/link";
+import { axiosInstance } from "@/api/axiosInstance";
+import { API_URL } from "@/api/api_urls";
+import { useGetAllPost } from "@/api/post_requests/query_requests"
 
 const Home = () => {
+    const {data, isLoading, error} = useGetAllPost()
 
-  
-  
+  const all_posts = data?.data
 
   return (
     <>
@@ -65,14 +70,15 @@ const Home = () => {
               </h1>
               <div>
                 <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-                  <PostCard />
-                  <PostCard />
-                  <PostCard />
-                  <PostCard />
+                  {
+                    all_posts?.map((post:any, index:number) => {
+                      return <PostCard key={index} post={post} />
+                    })
+                  }
                 </div>
                 <div className="flex justify-center mt-3">
                   <Link href="/blog_listing">
-                    <Button size="large">View All Post</Button>
+                    <Button type="text" size="large">Show more Post</Button>
                   </Link>
                 </div>
               </div>

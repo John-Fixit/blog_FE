@@ -41,7 +41,7 @@ const PushNotification: React.FC = () => {
 
           console.log(await response.json());
 
-        } catch (error) {
+        } catch (error:any) {
           console.error('Service Worker Error:', error?.message);
         }
       }
