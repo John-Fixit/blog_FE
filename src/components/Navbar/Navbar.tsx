@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="">
-            <div className="lg:hidden" onClick={toggleNavbar}>
+            <div className="lg:hidden cursor-pointer" onClick={toggleNavbar}>
                 <FaBars size={'2rem'}/>
             </div>
             <ul className="hidden lg:flex gap-8 ">
@@ -50,9 +50,6 @@ const Navbar: React.FC = () => {
               </li>
               <li>
                 <Link href="/about">About</Link>
-              </li>
-              <li>
-                <Link href="/single_post">Single Post</Link>
               </li>
               <li>
                 <Link href="/contact">Contact</Link>

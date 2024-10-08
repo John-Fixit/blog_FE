@@ -1,21 +1,71 @@
-
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import HomePageLayout from "./layouts/HomePageLayout/layout";
 import Image from "next/image";
 import PostCard from "@/components/PostCard/PostCard";
 import contentImage from "@/components/assets/content.png";
-import { Button } from "antd";
+import { Button, Result, Spin } from "antd";
 import Link from "next/link";
 import { axiosInstance } from "@/api/axiosInstance";
 import { API_URL } from "@/api/api_urls";
-import { useGetAllPost } from "@/api/post_requests/query_requests"
+import useSWR from "swr";
+import { useInView } from "react-intersection-observer";
+
+
+type HomeProps = {
+  posts: Array<object>;
+  nextPage: Boolean;
+  totalPost: Number;
+}
+
+const fetcher = (url:string) => axiosInstance.get(url).then((res) => res.data);
 
 const Home = () => {
-    const {data, isLoading, error} = useGetAllPost()
 
-  const all_posts = data?.data
+  const [page, setPage] = useState(1);
+
+  const [posts, setPosts] = useState<any>([])
+
+
+  const { ref, inView } = useInView()
+
+  const { data, error } = useSWR(`${API_URL.all_post}?page=${page}`, fetcher);
+
+
+
+
+
+const post_data = useMemo(()=>{
+    return data?.data
+}, [data])
+
+
+
+ useEffect(()=>{
+
+    if(inView && post_data?.hasNextPage){
+
+
+      console.log(post_data?.nextPage);
+      setPage(post_data?.nextPage)
+    }
+
+  }, [inView, post_data])
+
+
+
+useEffect(() => {
+
+
+
+  if(post_data?.posts){
+    setPosts(post_data?.posts)
+  }
+
+
+}, [data, error, post_data, posts]);
+
 
   return (
     <>
@@ -55,11 +105,6 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            {/* <Image
-              src={contentImage}
-              alt="bg-content"
-              className="absolute lg:w-[40%] -bottom-20 lg:left-4 left-0 object-cover"
-            /> */}
           </section>
 
           <section className="lg:px-[5rem] md:px-[3rem] px-[2rem] py-[5rem] bg-white dark:bg-[#181A2A]">
@@ -69,28 +114,52 @@ const Home = () => {
                 Latest Post
               </h1>
               <div>
-                <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-                  {
-                    all_posts?.map((post:any, index:number) => {
-                      return <PostCard key={index} post={post} />
-                    })
-                  }
-                </div>
-                <div className="flex justify-center mt-3">
-                  <Link href="/blog_listing">
-                    <Button type="text" size="large">Show more Post</Button>
-                  </Link>
-                </div>
+                {error ? (
+                  <Result
+                    status="error"
+                    title="Unexpected Error occurred"
+                  ></Result>
+                ) : (
+                  <>
+                    <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+                      {posts?.length ? posts?.map((post: any, index: number) => {
+                        return <PostCard key={index} post={post} />;
+                      }): null}
+                    </div>
+                    {/* <div className="flex justify-center mt-3">
+                      <Link href="/blog_listing">
+                        <Button type="text" size="large" className="dark:!text-white">
+                          Show more Post
+                        </Button>
+                      </Link>
+                    </div> */}
+
+
+                    {
+                      !data ? (
+                        <div className="flex justify-center mt-3">
+                          <Spin />
+                        </div>
+                      ): null
+                    }
+
+                    {
+                      post_data?.hasNextPage ? <div ref={ref}>Hello world this is {inView}</div> : null
+                    }
+
+                  </>
+                )}
               </div>
             </div>
           </section>
         </main>
       </HomePageLayout>
-
-
-      
     </>
   );
 };
 
+
 export default Home;
+
+
+
