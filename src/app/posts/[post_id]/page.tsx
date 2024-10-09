@@ -33,27 +33,31 @@ const Single_post = ({ params }: SinglePostProps) => {
   return (
     <>
       <HomePageLayout>
-        <div className="grid grid-cols-3 mt-4">
+        <div className="lg:mx-20 md:mx-15 sm:mx-10 mx-10 grid lg:grid-cols-3 grid-cols-1 mt-4 gap-x-5 gap-y-4">
             <div className="col-span-2">
-                    <div className="lg:mx-20 md:mx-15 sm:mx-10 mx-10">
+                    <div className="">
                     <Category category={post_details?.category} />
                     <h1 className="font-semibold lg:text-2xl md:text-2xl sm:text-2xl text-sm mt-3">
                         {post_details?.post_title}
                     </h1>
                     <div className="flex lg:gap-6 md:gap-4 gap-6 items-center flex-wrap mt-2">
                         <div className="flex gap-2 items-center">
-                        <div className="w-[36px]">
+                        {/* <div className="w-[36px]">
                             <Image
                             src="https://saharareporters.com/sites/default/files/styles/focal_point_1300x650/public/2024-10/1000225868.jpg?h=25061769&itok=MV9v0_lL"
                             alt="avatar"
                             width={50}
-                            height={10}
+                            height={50}
                             className="rounded-full"
                             />
-                        </div>
+                        </div> */}
+                        {
+                          post_details?.posted_by ? (
                         <p className="text-[#97989F] font-medium text-[16px]">
-                            {"Tracey Wilson"}
+                            Posted by <span className="font-semibold text-black/70">{post_details?.posted_by}</span>
                         </p>
+                          ): null
+                        }
                         </div>
                         <p className="text-[#97989F] text-[16px]">
                         {formatDate(post_details?.post_created_at)}
@@ -62,9 +66,8 @@ const Single_post = ({ params }: SinglePostProps) => {
 
                     {/* just put it there after the api we use the image inside it  */}
                     <section className="mt-5">
-                        {/* <PostCard post={post_details} /> */}
                         <div
-                        className={`rounded-lg bg-no-repeat bg-center bg-cover h-[70vh]`}
+                        className={`rounded-lg bg-no-repeat bg-center bg-contain h-[70vh]`}
                         style={{ backgroundImage: `url(${post_details?.post_img_url})` }}
                         ></div>
                     </section>
@@ -73,7 +76,7 @@ const Single_post = ({ params }: SinglePostProps) => {
             </div>
             <div className="">
                 <h1 className="text-md font-semibold">Related Posts:</h1>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid lg:grid-cols-1 grid-cols-2 gap-4 lg:flex flex-col gap-y-3 mt-2">
                     {
                         related_posts?.length ? (
                             related_posts?.map((post: any, index: number) => {

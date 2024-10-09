@@ -11,60 +11,57 @@ import { axiosInstance } from "@/api/axiosInstance";
 import { API_URL } from "@/api/api_urls";
 import useSWR from "swr";
 import { useInView } from "react-intersection-observer";
-
+import ShowMoreBtn from "@/components/showMoreBtn/ShowMoreBtn";
+// import { useInView as useInview2 } from "react-intersection-observer";
 
 type HomeProps = {
   posts: Array<object>;
   nextPage: Boolean;
   totalPost: Number;
-}
+};
 
-const fetcher = (url:string) => axiosInstance.get(url).then((res) => res.data);
+const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 
 const Home = () => {
-
   const [page, setPage] = useState(1);
 
-  const [posts, setPosts] = useState<any>([])
+  const [posts, setPosts] = useState<any>([]);
 
+  const { ref, inView } = useInView();
 
-  const { ref, inView } = useInView()
+  const { ref: prevRef, inView: prevInView } = useInView();
 
   const { data, error } = useSWR(`${API_URL.all_post}?page=${page}`, fetcher);
 
+  const post_data = useMemo(() => {
+    return data?.data;
+  }, [data]);
 
-
-
-
-const post_data = useMemo(()=>{
-    return data?.data
-}, [data])
-
-
-
- useEffect(()=>{
-
-    if(inView && post_data?.hasNextPage){
-
-
-      console.log(post_data?.nextPage);
-      setPage(post_data?.nextPage)
+  useEffect(() => {
+    if (prevInView && post_data?.hasPrevPage) {
+      setPage(post_data?.prevPage);
     }
-
-  }, [inView, post_data])
-
-
-
-useEffect(() => {
-
+    if (inView && post_data?.hasNextPage) {
+      console.log(post_data?.nextPage);
+      setPage(post_data?.nextPage);
+    }
+  }, [inView, prevInView, post_data]);
 
 
-  if(post_data?.posts){
-    setPosts(post_data?.posts)
-  }
+  useEffect(() => {
+    if (post_data?.posts) {
+      setPosts((prev:Array<object>)=>[...prev, ...post_data?.posts])
+    }
+  }, [post_data]);
 
+  const fetchMore = () => {
+    if (post_data?.hasNextPage) {
+      setPage(post_data?.nextPage);
+    } else if (post_data?.hasPrevPage) {
+      setPage(post_data?.prevPage);
+    }
+  };
 
-}, [data, error, post_data, posts]);
 
 
   return (
@@ -111,7 +108,7 @@ useEffect(() => {
             <div className="">{/* Ads can be here */}</div>
             <div>
               <h1 className="text-2xl md:text-3xl dark:text-white font-bold mb-5">
-                Latest Post
+                Latest Posts:
               </h1>
               <div>
                 {error ? (
@@ -121,32 +118,33 @@ useEffect(() => {
                   ></Result>
                 ) : (
                   <>
+                    {post_data?.hasPrevPage ? (
+                      <div ref={prevRef}>Hello world this is {inView}</div>
+                    ) : null}
                     <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-                      {posts?.length ? posts?.map((post: any, index: number) => {
-                        return <PostCard key={index} post={post} />;
-                      }): null}
+                      {posts?.length
+                        ? posts?.map((post: any, index: number) => {
+                            return <PostCard key={index} post={post} />;
+                          })
+                        : null}
                     </div>
-                    {/* <div className="flex justify-center mt-3">
-                      <Link href="/blog_listing">
-                        <Button type="text" size="large" className="dark:!text-white">
-                          Show more Post
-                        </Button>
-                      </Link>
-                    </div> */}
-
-
                     {
-                      !data ? (
-                        <div className="flex justify-center mt-3">
-                          <Spin />
-                        </div>
+                      post_data?.hasNextPage ? (
+                    <div className="flex justify-center mt-3">
+                      <ShowMoreBtn eventAction={fetchMore} />
+                    </div>
                       ): null
                     }
 
-                    {
-                      post_data?.hasNextPage ? <div ref={ref}>Hello world this is {inView}</div> : null
-                    }
+                    {!data ? (
+                      <div className="flex justify-center mt-3">
+                        <Spin />
+                      </div>
+                    ) : null}
 
+                    {/* {
+                      post_data?.hasNextPage ? <div ref={ref}>Hello world this is {inView}</div> : null
+                    } */}
                   </>
                 )}
               </div>
@@ -158,8 +156,4 @@ useEffect(() => {
   );
 };
 
-
 export default Home;
-
-
-

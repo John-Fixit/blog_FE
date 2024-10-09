@@ -30,11 +30,9 @@ const PostCard: React.FC<Props> = ({ post }) => {
           style={{ backgroundImage: `url(${post?.post_img_url})` }}
         ></div>
         <div className="p-3">
-          {
-            post?.category ? (
+          
               <Category category={post?.category} />
-            ): null
-          }
+         
           <Link href={`/posts/${post?.id}`}>
             <p className="font-semibold text-[#2e2f3a] dark:text-white text-[24px] leading-[1.2] tracking-wide my-3  ease hover:opacity-70 cursor-pointer hover:duration-500">
               {post?.post_title}
