@@ -12,6 +12,7 @@ import { API_URL } from "@/api/api_urls";
 import useSWR from "swr";
 import { useInView } from "react-intersection-observer";
 import ShowMoreBtn from "@/components/showMoreBtn/ShowMoreBtn";
+import Head from "next/head";
 // import { useInView as useInview2 } from "react-intersection-observer";
 
 type HomeProps = {
@@ -45,10 +46,33 @@ const Home = () => {
     setPage(page);
   };
 
-
+  const origin = typeof window !== 'undefined' && window?.location?.origin;
 
   return (
     <>
+    <Head>
+        {/* SEO Meta Tags */}
+        <title>All Posts | FreshScoop</title>
+        <meta name="description" content="Explore all the latest posts on various topics. Stay updated with fresh content from FreshScoop." />
+
+        <meta name="keywords" content="blog, nextjs, daily post, metro freshscoop, crawl, seo, posts, sports, entertainment, news, sponsored" />
+
+        {/* Open Graph Meta Tags for Social Sharing */}
+        <meta property="og:title" content="All Posts | FreshScoop" />
+        <meta property="og:description" content="Explore all the latest blog posts on various topics. Stay updated with fresh content from FreshScoop." />
+        <meta property="og:image" content="/../components/assets/front_bg.png" /> {/* Path to your image */}
+        <meta property="og:url" content={`${origin}`} />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="All Posts | FreshScoop" />
+        <meta name="twitter:description" content="Explore all the latest blog posts on various topics. like: metro, crawl, seo, posts, sports, entertainment, news, sponsored" />
+        <meta name="twitter:image" content="/images/blog-banner.jpg" />
+
+        {/* Canonical Link */}
+        <link rel="canonical" href="https://yourwebsite.com/posts" />
+      </Head>
       <HomePageLayout>
         <main>
           <section
@@ -68,7 +92,7 @@ const Home = () => {
                   <div className="flex gap-2 items-center">
                     <div className="w-[36px]">
                       <Image
-                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                        src="/../components/assets/front_bg.png"
                         alt="avatar"
                         width={50}
                         height={10}

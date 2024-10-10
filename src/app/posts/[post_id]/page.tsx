@@ -11,6 +11,7 @@ import RenderHTMLContent from "@/components/RenderHTMLContent/RenderHTMLContent"
 import { formatDate } from "@/utils/formatDate";
 import Category from "@/lib/category/Category";
 import Image from "next/image";
+import Head from "next/head";
 
 interface SinglePostProps {
   params: {
@@ -30,8 +31,23 @@ const Single_post = ({ params }: SinglePostProps) => {
 
   const related_posts = data?.data?.related_post;
 
+
+  const origin = typeof window !== 'undefined' && window?.location?.origin;
+
   return (
     <>
+
+<Head>
+        <title>{post_details.title} | My Blog</title>
+        <meta name="description" content={post_details.post_body} />
+        <meta name="keywords" content="blog, nextjs, seo, posts, sports, entertainment, news, sponsored" />
+        <meta property="og:title" content={post_details.title} />
+        <meta property="og:description" content={post_details.post_body} />
+        <meta property="og:image" content={post_details.post_img_url} />
+        <meta property="og:url" content={`${origin}/posts/${post_details.id}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+
       <HomePageLayout>
         <div className="lg:mx-20 md:mx-15 sm:mx-10 mx-10 grid lg:grid-cols-3 grid-cols-1 mt-4 gap-x-5 gap-y-4">
             <div className="col-span-2">
