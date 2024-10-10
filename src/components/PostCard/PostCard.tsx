@@ -33,7 +33,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
           
               <Category category={post?.category} />
          
-          <Link href={`/posts/${post?.id}`}>
+          <Link href={`/posts/${post?.id}`} passHref prefetch={true}>
             <p className="font-semibold text-[#2e2f3a] dark:text-white text-[24px] leading-[1.2] tracking-wide my-3  ease hover:opacity-70 cursor-pointer hover:duration-500">
               {post?.post_title}
             </p>

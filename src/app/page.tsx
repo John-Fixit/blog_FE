@@ -5,7 +5,7 @@ import HomePageLayout from "./layouts/HomePageLayout/layout";
 import Image from "next/image";
 import PostCard from "@/components/PostCard/PostCard";
 import contentImage from "@/components/assets/content.png";
-import { Button, Result, Spin } from "antd";
+import { Pagination, PaginationProps, Result, Spin } from "antd";
 import Link from "next/link";
 import { axiosInstance } from "@/api/axiosInstance";
 import { API_URL } from "@/api/api_urls";
@@ -27,39 +27,22 @@ const Home = () => {
 
   const [posts, setPosts] = useState<any>([]);
 
-  const { ref, inView } = useInView();
-
-  const { ref: prevRef, inView: prevInView } = useInView();
-
   const { data, error } = useSWR(`${API_URL.all_post}?page=${page}`, fetcher);
 
   const post_data = useMemo(() => {
     return data?.data;
   }, [data]);
 
-  useEffect(() => {
-    if (prevInView && post_data?.hasPrevPage) {
-      setPage(post_data?.prevPage);
-    }
-    if (inView && post_data?.hasNextPage) {
-      console.log(post_data?.nextPage);
-      setPage(post_data?.nextPage);
-    }
-  }, [inView, prevInView, post_data]);
-
 
   useEffect(() => {
     if (post_data?.posts) {
-      setPosts((prev:Array<object>)=>[...prev, ...post_data?.posts])
+      setPosts(post_data?.posts);
     }
   }, [post_data]);
 
-  const fetchMore = () => {
-    if (post_data?.hasNextPage) {
-      setPage(post_data?.nextPage);
-    } else if (post_data?.hasPrevPage) {
-      setPage(post_data?.prevPage);
-    }
+
+  const onChange: PaginationProps["onChange"] = (page) => {
+    setPage(page);
   };
 
 
@@ -114,13 +97,11 @@ const Home = () => {
                 {error ? (
                   <Result
                     status="error"
-                    title="Unexpected Error occurred"
+                    title={<p className="dark:text-white">Unexpected Error occurred</p>}
                   ></Result>
                 ) : (
                   <>
-                    {post_data?.hasPrevPage ? (
-                      <div ref={prevRef}>Hello world this is {inView}</div>
-                    ) : null}
+                   
                     <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                       {posts?.length
                         ? posts?.map((post: any, index: number) => {
@@ -128,19 +109,30 @@ const Home = () => {
                           })
                         : null}
                     </div>
-                    {
-                      post_data?.hasNextPage ? (
-                    <div className="flex justify-center mt-3">
-                      <ShowMoreBtn eventAction={fetchMore} />
-                    </div>
-                      ): null
-                    }
+                    {/* {post_data?.hasNextPage ? (
+                      <div className="flex justify-center mt-3">
+                        <ShowMoreBtn eventAction={fetchMore} />
+                      </div>
+                    ) : null} */}
 
                     {!data ? (
                       <div className="flex justify-center mt-3">
                         <Spin />
                       </div>
                     ) : null}
+
+
+<div className="flex justify-center mt-3">
+                    <Pagination
+                      current={page}
+                      onChange={onChange}
+                      pageSize={post_data?.postPerPage}
+                      total={post_data?.totalPostCount}
+                      // hideOnSinglePage={true}
+                      showSizeChanger={false}
+                    />
+</div>
+                    
 
                     {/* {
                       post_data?.hasNextPage ? <div ref={ref}>Hello world this is {inView}</div> : null
